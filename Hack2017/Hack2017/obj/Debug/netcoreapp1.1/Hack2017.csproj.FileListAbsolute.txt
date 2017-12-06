@@ -1,0 +1,9 @@
+C:\Dev\SSCS\SSCS_Hackathon-_2017\Hack2017\Hack2017\bin\Debug\netcoreapp1.1\Hack2017.deps.json
+C:\Dev\SSCS\SSCS_Hackathon-_2017\Hack2017\Hack2017\bin\Debug\netcoreapp1.1\Hack2017.runtimeconfig.json
+C:\Dev\SSCS\SSCS_Hackathon-_2017\Hack2017\Hack2017\bin\Debug\netcoreapp1.1\Hack2017.runtimeconfig.dev.json
+C:\Dev\SSCS\SSCS_Hackathon-_2017\Hack2017\Hack2017\bin\Debug\netcoreapp1.1\Hack2017.dll
+C:\Dev\SSCS\SSCS_Hackathon-_2017\Hack2017\Hack2017\bin\Debug\netcoreapp1.1\Hack2017.pdb
+C:\Dev\SSCS\SSCS_Hackathon-_2017\Hack2017\Hack2017\obj\Debug\netcoreapp1.1\Hack2017.csprojResolveAssemblyReference.cache
+C:\Dev\SSCS\SSCS_Hackathon-_2017\Hack2017\Hack2017\obj\Debug\netcoreapp1.1\Hack2017.AssemblyInfo.cs
+C:\Dev\SSCS\SSCS_Hackathon-_2017\Hack2017\Hack2017\obj\Debug\netcoreapp1.1\Hack2017.dll
+C:\Dev\SSCS\SSCS_Hackathon-_2017\Hack2017\Hack2017\obj\Debug\netcoreapp1.1\Hack2017.pdb
