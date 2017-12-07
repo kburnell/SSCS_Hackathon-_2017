@@ -49,5 +49,14 @@ namespace Hack2017.Services
         }
 
 
+        private Func<decimal, decimal> GetSalesPrediction(IEnumerable<SaleAggregate> skuAggregates)
+        {
+            Func<SaleAggregate, decimal> salesForDay = x => x.Quantity;
+            Func<SaleAggregate, decimal> dateAsDeciaml = x => x.Date.DayOfYear;
+
+            return Math.Statistics.LinearRegression(skuAggregates, dateAsDeciaml, salesForDay);
+        }
+
+
     }
 }

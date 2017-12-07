@@ -59,11 +59,11 @@ namespace Hack2017.Math
 
             return x => Slope(x, a, b);
         }
-
+        
         public static decimal LinearRegressionPointA(int n, decimal sigmaX, decimal sigmaY, decimal sigmaXY, decimal sigmaXsqr, decimal sigmaYsqr)
         {
             var top = sigmaY * sigmaXsqr - sigmaX * sigmaXY;
-            var bottom = n * sigmaXsqr - sigmaXsqr;
+            var bottom = n * sigmaXsqr - (decimal)System.Math.Pow((double)sigmaX, 2);
 
             return top / bottom;
         }
@@ -71,7 +71,7 @@ namespace Hack2017.Math
         public static decimal LinearRegressionPointB(int n, decimal sigmaX, decimal sigmaY, decimal sigmaXY, decimal sigmaXsqr, decimal sigmaYsqr)
         {
             var top = n * sigmaXY - sigmaX * sigmaY;
-            var bottom = n * sigmaXsqr - sigmaXsqr;
+            var bottom = n * sigmaXsqr - (decimal)System.Math.Pow((double)sigmaX, 2);
 
             return top / bottom;
         }
