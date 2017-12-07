@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Hack2017.Models;
 using Hack2017.Services;
 
@@ -11,37 +12,44 @@ namespace Hack2017 {
         private const string RootPath = "/Users/keithburnell/dev/sscs/data";
         private static readonly string AggregatePath = $"{RootPath}/aggregate.json";
 
-        private static IList<SaleAggregate> _aggregates = new List<SaleAggregate>();
         private static readonly JSONService _jsonService = new JSONService();
-
-        private static string _productSku = "";
+        private static readonly ForecastService _forecastService = new ForecastService();
 
         private static void Main(string[] args) {
             
-            Aggregate();
+            //Aggregate();
 
-            _aggregates = _jsonService.Read<SaleAggregate>(AggregatePath).ToList();
+            var aggregates = _jsonService.Read<SaleAggregate>(AggregatePath).ToList();
 
             var keepGoing = true;
 
             while (keepGoing) {
-                Console.Write("Enter Product SKU: ");
-                _productSku = Console.ReadLine();
+                
+                Console.Write("Product SKU: ");
+                var productSku = Console.ReadLine();
 
-                var skuAggregates = _aggregates.Where(a => a.POSCode == _productSku);
+                Console.Write("Event in Next 10 Days (Y/N): ");
+                var isAnEvent = Console.ReadKey().Key == ConsoleKey.Y;
 
+                Console.WriteLine();
+
+                var skuAggregates = aggregates.Where(a => a.POSCode == productSku);
                 if (skuAggregates == null || !skuAggregates.Any())
-                    Console.WriteLine("No match found");
+                {
+                    Console.WriteLine($"No sales history for sku {productSku}");
+                }
                 else
-                    Console.WriteLine(_productSku);
-
-                Console.WriteLine("Hit 'Enter' to enter another sku or any other key to exit");
+                {
+                    Forecast(productSku, skuAggregates, isAnEvent);
+                }
+                Console.WriteLine();
+                Console.WriteLine("Hit 'Enter' to process another sku or any other key to exit");
                 keepGoing = Console.ReadKey().Key == ConsoleKey.Enter;
             }
         }
 
         private static void Aggregate() {
-            
+
             var sales = _jsonService.Read<Sale>($"{RootPath}/sales.json");
             Console.WriteLine($"Processing...{sales.Count()} Sales");
             var temps = _jsonService.Read<Temperature>($"{RootPath}/weather.json");
@@ -49,6 +57,7 @@ namespace Hack2017 {
             var events = _jsonService.Read<Event>($"{RootPath}/events2.json");
             Console.WriteLine($"Processing...{events.Count()} Events");
 
+            var aggregates = new List<SaleAggregate>();
             foreach (var sale in sales) {
                 var date = sale.Date;
                 var aggregate = new SaleAggregate {
@@ -66,12 +75,36 @@ namespace Hack2017 {
                     aggregate.MaxTemp = t.MaxTemp;
                     aggregate.FeelsLikeTemp = t.FeelsLikeTemp;
                 }
-                _aggregates.Add(aggregate);
+                aggregates.Add(aggregate);
             }
 
-            _jsonService.Write(_aggregates, AggregatePath);
+            _jsonService.Write(aggregates.OrderByDescending(a => a.Date), AggregatePath);
 
-            Console.WriteLine($"Aggregating...{_aggregates.Count()} Records");
+            Console.WriteLine($"Aggregating...{aggregates.Count()} Records");
+        }
+
+        private static void Forecast(string productSku, IEnumerable<SaleAggregate> skuAggregates, bool isAnEvent) 
+        {
+            Console.WriteLine("Thinking...");
+            Thread.Sleep(1000);
+            Console.WriteLine("Asking Siri for the answer...");
+            Thread.Sleep(1000);
+            Console.WriteLine("Asking again because...well Siri");
+            Thread.Sleep(1000);
+            Console.WriteLine();
+            Console.WriteLine();
+
+            var forecast = _forecastService.Forecast(skuAggregates, isAnEvent);
+
+            Console.WriteLine("*******************************************************************");
+            var msg = $"10 Day Projected Sale Quantities for {productSku}";
+            if (isAnEvent) msg += " With Event During Period";
+            Console.WriteLine(msg);
+            Console.WriteLine("*******************************************************************");
+            foreach (var f in forecast)
+            {
+                Console.WriteLine($"{f.Date.Date.ToString("yyyy-MM-dd")} - Quantity: {f.Quantity}");
+            }
         }
 
     }
