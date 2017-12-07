@@ -23,7 +23,9 @@ namespace Hack2017.Services
                 Console.WriteLine($"Weather Correlation {weatherCorrelation}");
             }
 
-            var salesCorrelationFunc = GetSalesPrediction(skuAggregates);
+            var blanksAddedSkus = AddBlankDays(skuAggregates);
+
+            var salesCorrelationFunc = GetSalesPrediction(blanksAddedSkus);
           
             var start = DateTime.Parse("12/1/2017");
             var forecast = new List<PlotData>();
