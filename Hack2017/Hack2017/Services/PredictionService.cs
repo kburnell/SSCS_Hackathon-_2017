@@ -21,21 +21,24 @@ namespace Hack2017.Services
                 weatherCorrelation = weatherCorrelationFunc.Invoke(averageTemperature.Value);
                 Console.WriteLine($"Weather Correlation {weatherCorrelation}");
             }
+
+            var salesCorrelationFunc = GetSalesPrediction(skuAggregates);
           
             var start = DateTime.Parse("12/1/2017");
-            var forecast = new List<PlotData>
+            var forecast = new List<PlotData>();
+
+            for (var i = 0; i < 10; i++)
             {
-                new PlotData{XLabel = start.ToString("yyyy-MM-dd"), Y = 20},
-                new PlotData{XLabel = start.AddDays(1).ToString("yyyy-MM-dd"), Y = 20},
-                new PlotData{XLabel = start.AddDays(2).ToString("yyyy-MM-dd"), Y = 21},
-                new PlotData{XLabel = start.AddDays(3).ToString("yyyy-MM-dd"), Y = 20},
-                new PlotData{XLabel = start.AddDays(4).ToString("yyyy-MM-dd"), Y = 23},
-                new PlotData{XLabel = start.AddDays(5).ToString("yyyy-MM-dd"), Y = 15},
-                new PlotData{XLabel = start.AddDays(6).ToString("yyyy-MM-dd"), Y = 21},
-                new PlotData{XLabel = start.AddDays(7).ToString("yyyy-MM-dd"), Y = 22},
-                new PlotData{XLabel = start.AddDays(8).ToString("yyyy-MM-dd"), Y = 20},
-                new PlotData{XLabel = start.AddDays(9).ToString("yyyy-MM-dd"), Y = 19}
-            };
+                var date = start.AddDays(i);
+
+                forecast.Add(new PlotData
+                {
+                    X = date.DayOfYear,
+                    XLabel = date.ToString("yyyy-MM-dd"),
+                    Y = salesCorrelationFunc(date.DayOfYear)
+                });
+
+            }
 
             return forecast;
 
