@@ -33,6 +33,15 @@ namespace Hack2017 {
                 var eventCountInput = Console.ReadLine();
                 int.TryParse(eventCountInput, out numberOfEvents);
 
+
+                decimal? averageTempForPeriod = null;
+                decimal outAverageTempForPeriod;
+                Console.Write("Predicted average temperature for period: ");
+                var averageTempInput = Console.ReadLine();
+                if (decimal.TryParse(averageTempInput, out outAverageTempForPeriod)){
+                    averageTempForPeriod = outAverageTempForPeriod;
+                }
+
                 Console.WriteLine();
 
                 var skuAggregates = aggregates.Where(a => a.POSCode == productSku);
@@ -42,7 +51,7 @@ namespace Hack2017 {
                 }
                 else
                 {
-                    Forecast(productSku, skuAggregates, numberOfEvents);
+                    Forecast(productSku, skuAggregates, numberOfEvents, averageTempForPeriod);
                 }
                 Console.WriteLine();
                 Console.WriteLine("Hit 'Enter' to process another sku or any other key to exit");
@@ -85,7 +94,7 @@ namespace Hack2017 {
             Console.WriteLine($"Aggregating...{aggregates.Count()} Records");
         }
 
-        private static void Forecast(string productSku, IEnumerable<SaleAggregate> skuAggregates, int numberOfEvents) 
+        private static void Forecast(string productSku, IEnumerable<SaleAggregate> skuAggregates, int numberOfEvents, decimal? averageTemp) 
         {
             Console.WriteLine("Thinking...");
             Thread.Sleep(1000);
@@ -96,7 +105,7 @@ namespace Hack2017 {
             Console.WriteLine();
             Console.WriteLine();
 
-            var prediction = _predictionService.Predict(skuAggregates, numberOfEvents);
+            var prediction = _predictionService.Predict(skuAggregates, numberOfEvents, averageTemp);
 
             Console.WriteLine("*******************************************************************");
             Console.WriteLine($"10 Day ({numberOfEvents} Events) Projected Sale Quantities for {productSku}");

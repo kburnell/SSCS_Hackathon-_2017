@@ -6,6 +6,6 @@ namespace Hack2017.Interfaces
     public interface IPredictionEngine
     {
         List<PlotData> Predict(IEnumerable<SaleAggregate> skuAggregates);
-        List<PlotData> Predict(IEnumerable<SaleAggregate> skuAggregates, int numberOfEvents);
+        List<PlotData> Predict(IEnumerable<SaleAggregate> skuAggregates, int numberOfEvents, decimal? averageTemperature);
     }
 }
