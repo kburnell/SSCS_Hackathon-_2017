@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Hack2017.Interfaces;
 using Hack2017.Math;
 using Hack2017.Models;
@@ -58,6 +59,27 @@ namespace Hack2017.Services
             Func<SaleAggregate, decimal> dateAsDeciaml = x => x.Date.DayOfYear;
 
             return Math.Statistics.LinearRegression(skuAggregates, dateAsDeciaml, salesForDay);
+        }
+
+        private IEnumerable<SaleAggregate> AddBlankDays(IEnumerable<SaleAggregate> data)
+        {
+            var datalist = data.ToList();
+            var minDate = datalist.Min(x => x.Date);
+            var maxDate = datalist.Min(x => x.Date);
+            for (var i = 1; i < 365; i++)
+            {
+                if (minDate.AddDays(i) >= maxDate) break;
+                if (!datalist.Any(x => x.Date == minDate.AddDays(i))) {
+                    datalist.Add(new SaleAggregate()
+                    {
+                        Quantity = 0,
+                        Amount = 0,
+                        Date = minDate.AddDays(i)
+                    });
+                }
+            }
+
+            return datalist;
         }
 
 
