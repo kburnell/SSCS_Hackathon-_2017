@@ -13,7 +13,7 @@ namespace Hack2017 {
         private static readonly string AggregatePath = $"{RootPath}/aggregate.json";
 
         private static readonly JSONService _jsonService = new JSONService();
-        private static readonly ForecastService _forecastService = new ForecastService();
+        private static readonly PredictionService _predictionService = new PredictionService();
 
         private static void Main(string[] args) {
             
@@ -28,8 +28,10 @@ namespace Hack2017 {
                 Console.Write("Product SKU: ");
                 var productSku = Console.ReadLine();
 
-                Console.Write("Event in Next 10 Days (Y/N): ");
-                var isAnEvent = Console.ReadKey().Key == ConsoleKey.Y;
+                var numberOfEvents = 0;
+                Console.Write("Number of Events to Factor: ");
+                var eventCountInput = Console.ReadLine();
+                int.TryParse(eventCountInput, out numberOfEvents);
 
                 Console.WriteLine();
 
@@ -40,7 +42,7 @@ namespace Hack2017 {
                 }
                 else
                 {
-                    Forecast(productSku, skuAggregates, isAnEvent);
+                    Forecast(productSku, skuAggregates, numberOfEvents);
                 }
                 Console.WriteLine();
                 Console.WriteLine("Hit 'Enter' to process another sku or any other key to exit");
@@ -83,7 +85,7 @@ namespace Hack2017 {
             Console.WriteLine($"Aggregating...{aggregates.Count()} Records");
         }
 
-        private static void Forecast(string productSku, IEnumerable<SaleAggregate> skuAggregates, bool isAnEvent) 
+        private static void Forecast(string productSku, IEnumerable<SaleAggregate> skuAggregates, int numberOfEvents) 
         {
             Console.WriteLine("Thinking...");
             Thread.Sleep(1000);
@@ -94,16 +96,14 @@ namespace Hack2017 {
             Console.WriteLine();
             Console.WriteLine();
 
-            var forecast = _forecastService.Forecast(skuAggregates, isAnEvent);
+            var prediction = _predictionService.Predict(skuAggregates, numberOfEvents);
 
             Console.WriteLine("*******************************************************************");
-            var msg = $"10 Day Projected Sale Quantities for {productSku}";
-            if (isAnEvent) msg += " With Event During Period";
-            Console.WriteLine(msg);
+            Console.WriteLine($"10 Day ({numberOfEvents} Events) Projected Sale Quantities for {productSku}");
             Console.WriteLine("*******************************************************************");
-            foreach (var f in forecast)
+            foreach (var p in prediction)
             {
-                Console.WriteLine($"{f.Date.Date.ToString("yyyy-MM-dd")} - Quantity: {f.Quantity}");
+                Console.WriteLine($"{p.XLabel} - Quantity: {p.Y}");
             }
         }
 
