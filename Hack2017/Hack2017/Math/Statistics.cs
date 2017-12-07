@@ -39,7 +39,7 @@ namespace Hack2017.Math
             return y;
         }
 
-        public static Func<T, decimal> LinearRegression<T>(this IEnumerable<T> series, Func<T, decimal> xSelector, Func<T, decimal> ySelector)
+        public static Func<decimal, decimal> LinearRegression<T>(this IEnumerable<T> series, Func<T, decimal> xSelector, Func<T, decimal> ySelector)
         {
             var n = series.Count();
 
@@ -57,7 +57,7 @@ namespace Hack2017.Math
             //calculate our Y values off each item's X
             var plotItems = new List<PlotData>();
 
-            return x => Slope(xSelector(x), a, b);
+            return x => Slope(x, a, b);
         }
 
         public static decimal LinearRegressionPointA(int n, decimal sigmaX, decimal sigmaY, decimal sigmaXY, decimal sigmaXsqr, decimal sigmaYsqr)
