@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Services\" />
+    <Folder Include="Math\" />
   </ItemGroup>
 
   <ItemGroup>
