@@ -9,10 +9,11 @@ namespace Hack2017 {
 
     internal class Program {
 
-        private const string SalesPath = @"./data/sales.json";
-        private const string EventsPath = @"./data/events2.json";
-        private const string TemperaturesPath = @"./data/weather.json";
-        private const string AggregatePath = @"./data/aggregate.json";
+        private const string RootPath = "/Users/keithburnell/dev/sscs/data";
+        private static string SalesPath = $"{RootPath}/sales.json";
+        private static string EventsPath = $"{RootPath}/events2.json";
+        private static string TemperaturesPath = $"{RootPath}/weather.json";
+        private static string AggregatePath = $"{RootPath}/aggregate.json";
 
         private static IList<SaleAggregate> _aggregates = new List<SaleAggregate>();
         private static readonly Reader Reader = new Reader();
