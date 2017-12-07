@@ -67,7 +67,7 @@ namespace Hack2017.Services
         {
             var datalist = data.ToList();
             var minDate = datalist.Min(x => x.Date);
-            var maxDate = datalist.Min(x => x.Date);
+            var maxDate = datalist.Max(x => x.Date);
             for (var i = 1; i < 365; i++)
             {
                 if (minDate.AddDays(i) >= maxDate) break;
