@@ -105,15 +105,30 @@ namespace Hack2017 {
             Console.WriteLine();
             Console.WriteLine();
 
+
+
             var prediction = _predictionService.Predict(skuAggregates, numberOfEvents, averageTemp);
+
+            Console.WriteLine("*******************************************************************");
+            Console.WriteLine($"Previous 10 Sale Quantities for {productSku}");
+            Console.WriteLine("*******************************************************************");
+            var lastAggregates = skuAggregates.OrderByDescending(s => s.Date).Take(10);
+            foreach (var la in lastAggregates)
+            {
+                var d = la.Date.ToString("yyyy-MM-dd");
+                Console.WriteLine($"{d} - Quantity: {la.Quantity}");
+            }
 
             Console.WriteLine("*******************************************************************");
             Console.WriteLine($"10 Day ({numberOfEvents} Events) Projected Sale Quantities for {productSku}");
             Console.WriteLine("*******************************************************************");
             foreach (var p in prediction)
             {
-                Console.WriteLine($"{p.XLabel} - Quantity: {p.Y}");
+                
+                Console.WriteLine($"{p.XLabel} - Quantity: {System.Math.Round(p.Y,2)}");
             }
+
+            Console.WriteLine($"Total - Quantity: {prediction.Sum(p => p.Y)}");
         }
 
     }

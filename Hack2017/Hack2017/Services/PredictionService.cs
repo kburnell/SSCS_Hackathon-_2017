@@ -13,6 +13,7 @@ namespace Hack2017.Services
 
         public List<PlotData> Predict(IEnumerable<SaleAggregate> skuAggregates, int numberOfEvents, decimal? averageTemperature)
         {
+            //var aggregates = AddBlankDays(skuAggregates);
 
             var weatherCorrelation = 0m;
             var weatherCorrelationFunc = GetWeatherCorelationFunction(skuAggregates);
@@ -58,14 +59,14 @@ namespace Hack2017.Services
             Func<SaleAggregate, decimal> salesForDay = x => x.Quantity;
             Func<SaleAggregate, decimal> dateAsDeciaml = x => x.Date.DayOfYear;
 
-            return Math.Statistics.LinearRegression(skuAggregates, dateAsDeciaml, salesForDay);
+            return Statistics.LinearRegression(skuAggregates, dateAsDeciaml, salesForDay);
         }
 
         private IEnumerable<SaleAggregate> AddBlankDays(IEnumerable<SaleAggregate> data)
         {
             var datalist = data.ToList();
             var minDate = datalist.Min(x => x.Date);
-            var maxDate = datalist.Min(x => x.Date);
+            var maxDate = datalist.Max(x => x.Date);
             for (var i = 1; i < 365; i++)
             {
                 if (minDate.AddDays(i) >= maxDate) break;
@@ -74,6 +75,7 @@ namespace Hack2017.Services
                     {
                         Quantity = 0,
                         Amount = 0,
+                        FeelsLikeTemp = 0,
                         Date = minDate.AddDays(i)
                     });
                 }
