@@ -6,6 +6,8 @@ namespace Hack2017.Models {
 
         public DateTime Date { get; set; }
 
+        public int DayOfWeek { get; set; }
+
         public string POSCode { get; set; }
 
         public string Description { get; set; }

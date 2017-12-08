@@ -17,7 +17,7 @@ namespace Hack2017 {
 
         private static void Main(string[] args) {
             
-            //Aggregate();
+            Aggregate();
 
             var aggregates = _jsonService.Read<SaleAggregate>(AggregatePath).ToList();
 
@@ -73,6 +73,7 @@ namespace Hack2017 {
                 var date = sale.Date;
                 var aggregate = new SaleAggregate {
                     Date = date, 
+                    DayOfWeek = (int)date.DayOfWeek,
                     POSCode = sale.POSCode, 
                     Description = sale.Description, 
                     Quantity = sale.Quantity, Amount = sale.Amount
